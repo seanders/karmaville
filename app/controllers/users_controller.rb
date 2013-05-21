@@ -1,5 +1,12 @@
 class UsersController < ApplicationController
   def index
-    @users = User.by_karma.limit(50)
+      if params[:page] == nil 
+        @page = 1 
+      else 
+        @page = params[:page].to_i
+      end
+      @users = User.page(@page) 
+
+      @page_count = User.max_page(50)
   end
 end

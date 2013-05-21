@@ -1,12 +1,30 @@
 <h1>KarmaVille's Most Famous</h1>
 <table class="table table-bordered table-striped">
   <tr>
+    <th>#</th>
     <th>Karma</th>
     <th>Name</th>
     <th>Username</th>
     <th>Email</th>
   </tr>
-  <% @users.each do |user| %>
-    <%= render 'user_row', :user => user %>
+  
+  <% @users.each_with_index do |user, i| %>
+    <%= render 'user_row', :user => user, :i => i, :page => @page%>
   <% end %>
+
+  <div class="pagination">
+    <ul>
+      <li><%= link_to "First", "/?page=1"%></li>
+       <li><%= link_to "<<", "/?page=#{[@page-1,1].max}"%></li>
+      <% ([@page-2,1].max..[[@page-2,1].max+4,@page_count].min).each do |page| %>
+        <% if @page == page %>
+          <li class="active"><%= link_to "#{page}", "/?page=#{page}" %></li>
+        <% else %>    
+          <li class="disable"><%= link_to "#{page}", "/?page=#{page}" %></li>
+        <% end %>        
+      <% end %>
+      <li><%= link_to ">>", "/?page=#{[@page+1,@page_count].min}"%></li>
+      <li><%= link_to "Last", "/?page=#{@page_count}"%></li>
+    </ul>
+  </div>
 </table>
